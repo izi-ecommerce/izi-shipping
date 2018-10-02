@@ -1,0 +1,443 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-22 03:03+0300\n"
+"PO-Revision-Date: 2016-06-06 20:53+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+
+#: izi_shipping/checkout/views.py:33
+#, python-format
+msgid "Shipping method %s selected"
+msgstr "%s - доставка выбрана"
+
+#: izi_shipping/facade/emspost.py:25
+msgid "Russian Cities"
+msgstr "Города России"
+
+#: izi_shipping/facade/emspost.py:26
+msgid "Regions of Russia"
+msgstr "Регионы России"
+
+#: izi_shipping/facade/emspost.py:27
+msgid "All Russian Regions and Cities"
+msgstr "Все города и регионы России"
+
+#: izi_shipping/facade/emspost.py:28
+msgid "Foreign Countries"
+msgstr "Зарубежные страны"
+
+#: izi_shipping/facade/emspost.py:94
+msgid "Sorry. EMS API is offline right now"
+msgstr "Извините. EMS API сейчас офлайн"
+
+#: izi_shipping/facade/forms.py:39 izi_shipping/facade/forms.py:48
+#: izi_shipping/facade/forms.py:96 izi_shipping/facade/forms.py:104
+msgid "Destination city"
+msgstr "Место назначения"
+
+#: izi_shipping/facade/forms.py:67
+msgid "Type of transportation"
+msgstr "Способ транспортировки"
+
+#: izi_shipping/facade/forms.py:68
+msgid "Please choose the transportation type"
+msgstr "Выберите способ транспортировки"
+
+#: izi_shipping/facade/pecom.py:24
+msgid "Auto"
+msgstr "Авто"
+
+#: izi_shipping/facade/pecom.py:25
+msgid "Avia"
+msgstr "Авиа"
+
+#: izi_shipping/facade/pecom.py:319
+#, python-format
+msgid "Branch: %s"
+msgstr "Филиал: %s"
+
+#: izi_shipping/methods.py:19
+msgid "Self-service Pickup and shipping"
+msgstr "Самовывоз"
+
+#: izi_shipping/methods.py:20
+msgid "Customers can pick up goods in the central store"
+msgstr "Клиент сам забирает товар"
+
+#: izi_shipping/models.py:33
+msgid "PEC API ver. 1.0"
+msgstr "ПЭК API ver. 1.0"
+
+#: izi_shipping/models.py:34
+msgid "EMS Russian Post REST API"
+msgstr "EMS Почта России REST API"
+
+#: izi_shipping/models.py:35
+msgid "DHL API (not ready yet)"
+msgstr "DHL API (в разработке)"
+
+#: izi_shipping/models.py:36
+msgid "USPS API (not ready yet)"
+msgstr "USPS API (в разработке)"
+
+#: izi_shipping/models.py:97
+msgid "Online"
+msgstr "Онлайн"
+
+#: izi_shipping/models.py:98
+msgid "Offline"
+msgstr "Оффлайн"
+
+#: izi_shipping/models.py:99
+msgid "Disabled"
+msgstr "Отключено"
+
+#: izi_shipping/models.py:104
+msgid "Order includes shipping charges"
+msgstr "Стоимость доставки включена в заказ"
+
+#: izi_shipping/models.py:105
+msgid "Shipping is paid by buyer"
+msgstr "Доставка оплачивается покупателем"
+
+#: izi_shipping/models.py:108
+msgid "API username"
+msgstr "Имя пользователя API"
+
+#: izi_shipping/models.py:109
+msgid "API key"
+msgstr "ключ API"
+
+#: izi_shipping/models.py:110
+msgid "API type"
+msgstr "тип API"
+
+#: izi_shipping/models.py:114
+msgid "City of origin"
+msgstr "Место отправления"
+
+#: izi_shipping/models.py:115
+msgid "active"
+msgstr "активно"
+
+#: izi_shipping/models.py:116
+msgid "Use this method in checkout?"
+msgstr "Использовать этот способ?"
+
+#: izi_shipping/models.py:118
+msgid "status"
+msgstr "статус"
+
+#: izi_shipping/models.py:123
+msgid "payment type"
+msgstr "тип оплаты"
+
+#: izi_shipping/models.py:132
+msgid "Containers or boxes"
+msgstr "Коробки и контейнеры"
+
+#: izi_shipping/models.py:133
+msgid "Containers or boxes could be used for packing"
+msgstr "Коробки и контейнеры, которые могут использоваться для упаковки"
+
+#: izi_shipping/models.py:170
+msgid "ERROR! There is no shipping address for charge calculation!\n"
+msgstr "Ошибка! Отсутствует адрес для расчета стоимости! \n"
+
+#: izi_shipping/models.py:172
+#, python-brace-format
+msgid ""
+"Approximated shipping price\n"
+"                                for {weight} kg from {origin} \n"
+"                                to {destination}\n"
+msgstr ""
+"Примерная цена доставки \n"
+"                                за {weight}кг из {origin} \n"
+"                                в {destination}\n"
+
+#: izi_shipping/models.py:219
+#, fuzzy, python-format
+#| msgid ""
+#| "%s API is offline. Cant \n"
+#| "                                        calculate anything. Sorry!"
+msgid ""
+"%s API is offline. Can't\n"
+"                                         calculate anything. Sorry!"
+msgstr ""
+"%s API отключено. Рассчет \n"
+"                                        невозможен. Sorry!"
+
+#: izi_shipping/models.py:221
+msgid "Please, choose another shipping method!"
+msgstr "Выберите другой способ доставки!"
+
+#: izi_shipping/models.py:224
+#, fuzzy, python-format
+#| msgid ""
+#| "City of origin '%s' not found \n"
+#| "                                      in the shipping company \n"
+#| "                                      postcodes to calculate charge."
+msgid ""
+"City of origin '%s' not found\n"
+"                                      in the shipping company \n"
+"                                      postcodes to calculate charge."
+msgstr ""
+"Пункт отправки '%s' не найден \n"
+"                                      в списке кодов данной службы "
+"доставки \n"
+"                                      необходимых для рассчета стоимости "
+"доставки."
+
+#: izi_shipping/models.py:227
+#, fuzzy, python-format
+#| msgid ""
+#| "It seems like we couldnt find code \n"
+#| "                                        for the city of origin (%s).\n"
+#| "                                        Please, select it manually, "
+#| "choose another \n"
+#| "                                        address or another shipping "
+#| "method.\n"
+#| "                                    "
+msgid ""
+"It seems like we couldn't find code\n"
+"                                        for the city of origin (%s).\n"
+"                                        Please, select it manually, choose "
+"another \n"
+"                                        address or another shipping method.\n"
+"                                    "
+msgstr ""
+"Похоже, код выбранного \n"
+"                                        пункта отправки (%s).\n"
+"                                        Вы можете попытаться найти город "
+"вручную, \n"
+"                                        выбрать другой адрес или другой "
+"способ доставки.\n"
+"                                    "
+
+#: izi_shipping/models.py:236
+#, fuzzy, python-brace-format
+#| msgid ""
+#| "Cant find destination city '{title}' \n"
+#| "                                      to calculate charge. \n"
+#| "                                      Errors: {errors}"
+msgid ""
+"Can't find destination city '{title}'\n"
+"                                      to calculate charge. \n"
+"                                      Errors: {errors}"
+msgstr ""
+"Невозможно рассчитать стоимость, не найден пункт назначения: <strong>{title} "
+"</strong>\n"
+"Ошибка:  {errors}"
+
+#: izi_shipping/models.py:239
+#, fuzzy, python-format
+#| msgid ""
+#| "It seems like we cant find code \n"
+#| "                                        for the city of destination "
+#| "(%s).\n"
+#| "                                        Please, select it manually, "
+#| "choose \n"
+#| "                                        another address or another "
+#| "shipping method.\n"
+#| "                                    "
+msgid ""
+"It seems like we can't find code\n"
+"                                        for the city of destination (%s).\n"
+"                                        Please, choose\n"
+"                                        another address or another shipping "
+"method.\n"
+"                                    "
+msgstr ""
+"Код пункта назначения не найден \n"
+"                                        (%s).\n"
+"                                        Вы можете попытаться найти город "
+"вручную, \n"
+"                                        выбрать другой адрес или другой "
+"способ доставки.\n"
+"                                    "
+
+#: izi_shipping/models.py:245
+msgid "Also, you can choose city of destination manually"
+msgstr ""
+
+#: izi_shipping/models.py:250
+#, python-format
+msgid "Found too many destinations for given city (%s)"
+msgstr "Найдено слишком много вариантов для выбранного города (%s)"
+
+#: izi_shipping/models.py:252
+msgid "Please refine your shipping address"
+msgstr "Уточните адрес доставки"
+
+#: izi_shipping/models.py:257
+#, fuzzy, python-format
+#| msgid ""
+#| "Error occured during charge \n"
+#| "                                        calculation for given city (%s)"
+msgid ""
+"Error occurred during charge\n"
+"                                        calculation for given city (%s)"
+msgstr "При расчете стоимости для (%s) произошла ошибка"
+
+#: izi_shipping/models.py:259
+#, python-format
+msgid "API error was: %s"
+msgstr "Сообщение API: (%s)"
+
+#: izi_shipping/models.py:290
+msgid "API-based Shipping Method"
+msgstr ""
+
+#: izi_shipping/models.py:291
+msgid "API-based Shipping Methods"
+msgstr ""
+
+#: izi_shipping/models.py:296
+msgid "Name"
+msgstr "Название"
+
+#: izi_shipping/models.py:297
+msgid "Description"
+msgstr "Описание"
+
+#: izi_shipping/models.py:299
+msgid "Image"
+msgstr "Изображение"
+
+#: izi_shipping/models.py:301
+msgid "Height, m"
+msgstr "Высота, м"
+
+#: izi_shipping/models.py:304
+msgid "Width, m"
+msgstr "Ширина, м"
+
+#: izi_shipping/models.py:307
+msgid "Lenght, m"
+msgstr "Длина, м"
+
+#: izi_shipping/models.py:310
+msgid "Max loading, kg"
+msgstr "Макс нагрузка, кг"
+
+#: izi_shipping/models.py:322
+msgid "Shipping Container"
+msgstr "Транспортный контейнер"
+
+#: izi_shipping/models.py:323
+msgid "Shipping Containers"
+msgstr "Перевозка контейнеров"
+
+#: izi_shipping/packers.py:96
+#, python-format
+msgid "virtual volume (%s)"
+msgstr "вирт. контейнер объемом %s"
+
+#: izi_shipping/templates/izi_shipping/partials/details_form.html:7
+msgid "Oops! We found some errors:"
+msgstr "Есть ошибки!"
+
+#: izi_shipping/templates/izi_shipping/partials/details_form.html:25
+msgid "Oops! We found some errors"
+msgstr "Есть ошибки!"
+
+#: izi_shipping/templates/izi_shipping/partials/details_form.html:25
+msgid "please check the error messages below and try again"
+msgstr "проверьте сообщение об ошибке и попробуйте снова"
+
+#: izi_shipping/templates/izi_shipping/partials/emspost_messages.html:3
+msgid ""
+"\n"
+"Details of shipping cost calculated by <strong>EMS</strong>\n"
+msgstr ""
+"\n"
+"Подробная информация о стоимости доставки <strong>EMS Почта России</strong>\n"
+
+#: izi_shipping/templates/izi_shipping/partials/emspost_messages.html:8
+#: izi_shipping/templates/izi_shipping/partials/pecom_messages.html:17
+#, python-format
+msgid ""
+"\n"
+"From <strong>%(origin)s</strong> to <strong>%(destination)s</strong>.<br>\n"
+"Brutto: %(total_weight)s kg.<br>\n"
+"Items:"
+msgstr ""
+"\n"
+"Из <strong>%(origin)s</strong> в <strong>%(destination)s</strong>.<br>\n"
+"Вес (брутто): %(total_weight)s кг.<br>\n"
+"Груз:"
+
+#: izi_shipping/templates/izi_shipping/partials/emspost_messages.html:14
+#, python-format
+msgid ""
+"\n"
+"<li>%(name)s ( %(weight)s kg, %(vol)sm<sup>3</sup>)</li>\n"
+msgstr ""
+"\n"
+"<li>%(name)s ( %(weight)s кг, %(vol)sм<sup>3</sup>)</li>\n"
+
+#: izi_shipping/templates/izi_shipping/partials/emspost_messages.html:20
+#, python-format
+msgid ""
+"\n"
+"Estimated delivery time: from %(min)s to %(max)s days.\n"
+msgstr ""
+"\n"
+"Примерное время доставки:  от %(min)s до %(max)s дней.\n"
+
+#: izi_shipping/templates/izi_shipping/partials/pecom_messages.html:3
+#, python-format
+msgid ""
+"\n"
+"Details of shipping cost calculated by <strong>PEC</strong>.\n"
+"Transport type: <b>%(name)s</b><br>\n"
+"including:\n"
+msgstr ""
+"\n"
+"Подробная информация о стоимости доставки компанией<strong>ПЭК</strong>.<br /"
+">\n"
+"Транспорт: <b>%(name)s</b><br />\n"
+"Подробно:\n"
+
+#: izi_shipping/templates/izi_shipping/partials/pecom_messages.html:23
+#, python-format
+msgid ""
+"\n"
+"\t\t<li>%(name)s ( %(weight)s kg, %(vol)sm<sup>3</sup>)</li>\n"
+"\t"
+msgstr ""
+"\n"
+"\t\t<li>%(name)s ( %(weight)sкг, %(vol)sм<sup>3</sup>)</li>\n"
+"\t"
+
+#: izi_shipping/templates/izi_shipping/partials/pecom_options.html:4
+msgid "including:"
+msgstr "включая:"
+
+#: izi_shipping/views.py:185
+#, python-format
+msgid "API is offline right now. Sorry. (%s)"
+msgstr "API в оффлайне. Извините. (%s)"
+
+#: izi_shipping/views.py:188
+#, python-format
+msgid "Calculator said: %s"
+msgstr "Сообщение калькулятора: %s"
+
+#~ msgid "Oops. API is offline right now. Sorry."
+#~ msgstr "УПС. Прямо сейчас API в оффлайне. Извините."
+
+#~ msgid "Your submitted shipping method is not permitted"
+#~ msgstr "Выбранный способ доставки недоступен"
