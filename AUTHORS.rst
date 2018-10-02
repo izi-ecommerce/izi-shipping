@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Oleg Rybkin <okfish@yandex.ru>
+* Daniel Do
 
 Contributors
 ------------
