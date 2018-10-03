@@ -1,6 +1,6 @@
 from decimal import Decimal as D
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from izi.core import prices
 from izi.apps.checkout.session import CheckoutSessionMixin as CoreCheckoutSessionMixin

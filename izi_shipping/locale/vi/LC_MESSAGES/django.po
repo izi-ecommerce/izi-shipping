@@ -1,0 +1,384 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-03 11:20+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+#: .\izi_shipping\checkout\views.py:33
+#, python-format
+msgid "Shipping method %s selected"
+msgstr ""
+
+#: .\izi_shipping\facade\emspost.py:25
+msgid "Russian Cities"
+msgstr ""
+
+#: .\izi_shipping\facade\emspost.py:26
+msgid "Regions of Russia"
+msgstr ""
+
+#: .\izi_shipping\facade\emspost.py:27
+msgid "All Russian Regions and Cities"
+msgstr ""
+
+#: .\izi_shipping\facade\emspost.py:28
+msgid "Foreign Countries"
+msgstr ""
+
+#: .\izi_shipping\facade\emspost.py:94
+msgid "Sorry. EMS API is offline right now"
+msgstr ""
+
+#: .\izi_shipping\facade\forms.py:39 .\izi_shipping\facade\forms.py:48
+#: .\izi_shipping\facade\forms.py:96 .\izi_shipping\facade\forms.py:104
+msgid "Destination city"
+msgstr ""
+
+#: .\izi_shipping\facade\forms.py:67
+msgid "Type of transportation"
+msgstr ""
+
+#: .\izi_shipping\facade\forms.py:68
+msgid "Please choose the transportation type"
+msgstr ""
+
+#: .\izi_shipping\facade\pecom.py:24
+msgid "Auto"
+msgstr ""
+
+#: .\izi_shipping\facade\pecom.py:25
+msgid "Avia"
+msgstr ""
+
+#: .\izi_shipping\facade\pecom.py:319
+#, python-format
+msgid "Branch: %s"
+msgstr ""
+
+#: .\izi_shipping\methods.py:19
+msgid "Self-service Pickup and shipping"
+msgstr ""
+
+#: .\izi_shipping\methods.py:20
+msgid "Customers can pick up goods in the central store"
+msgstr ""
+
+#: .\izi_shipping\models.py:34
+msgid "PEC API ver. 1.0"
+msgstr ""
+
+#: .\izi_shipping\models.py:35
+msgid "EMS Russian Post REST API"
+msgstr ""
+
+#: .\izi_shipping\models.py:36
+msgid "DHL API (not ready yet)"
+msgstr ""
+
+#: .\izi_shipping\models.py:37
+msgid "USPS API (not ready yet)"
+msgstr ""
+
+#: .\izi_shipping\models.py:103
+msgid "Online"
+msgstr ""
+
+#: .\izi_shipping\models.py:104
+msgid "Offline"
+msgstr ""
+
+#: .\izi_shipping\models.py:105
+msgid "Disabled"
+msgstr ""
+
+#: .\izi_shipping\models.py:110
+msgid "Order includes shipping charges"
+msgstr ""
+
+#: .\izi_shipping\models.py:111
+msgid "Shipping is paid by buyer"
+msgstr ""
+
+#: .\izi_shipping\models.py:116
+msgid "API username"
+msgstr ""
+
+#: .\izi_shipping\models.py:117
+msgid "API key"
+msgstr ""
+
+#: .\izi_shipping\models.py:118
+msgid "API type"
+msgstr ""
+
+#: .\izi_shipping\models.py:122
+msgid "City of origin"
+msgstr ""
+
+#: .\izi_shipping\models.py:123
+msgid "active"
+msgstr ""
+
+#: .\izi_shipping\models.py:124
+msgid "Use this method in checkout?"
+msgstr ""
+
+#: .\izi_shipping\models.py:126
+msgid "status"
+msgstr ""
+
+#: .\izi_shipping\models.py:131
+msgid "payment type"
+msgstr ""
+
+#: .\izi_shipping\models.py:140
+msgid "Containers or boxes"
+msgstr ""
+
+#: .\izi_shipping\models.py:141
+msgid "Containers or boxes could be used for packing"
+msgstr ""
+
+#: .\izi_shipping\models.py:144
+msgid "Destination codes whitelist"
+msgstr ""
+
+#: .\izi_shipping\models.py:145
+#, python-format
+msgid ""
+"Method will be available only for this destinations. White list have a "
+"higher priority, if set, other lists will be ignored. Type of codes depends "
+"on shipping API type. Use symbol \"%s\" to separate values."
+msgstr ""
+
+#: .\izi_shipping\models.py:153
+msgid "Destination codes blacklist"
+msgstr ""
+
+#: .\izi_shipping\models.py:154
+#, python-format
+msgid ""
+"Method will be not available for this destinations. Type of codes depends on "
+"shipping API type. Use symbol \"%s\" to separate values."
+msgstr ""
+
+#: .\izi_shipping\models.py:235
+msgid "ERROR! There is no shipping address for charge calculation!\n"
+msgstr ""
+
+#: .\izi_shipping\models.py:237
+#, python-brace-format
+msgid ""
+"Approximated shipping price\n"
+"                                for {weight} kg from {origin} \n"
+"                                to {destination}\n"
+msgstr ""
+
+#: .\izi_shipping\models.py:284
+#, python-format
+msgid ""
+"%s API is offline. Can't\n"
+"                                         calculate anything. Sorry!"
+msgstr ""
+
+#: .\izi_shipping\models.py:286
+msgid "Please, choose another shipping method!"
+msgstr ""
+
+#: .\izi_shipping\models.py:289
+#, python-format
+msgid ""
+"City of origin '%s' not found\n"
+"                                      in the shipping company \n"
+"                                      postcodes to calculate charge."
+msgstr ""
+
+#: .\izi_shipping\models.py:292
+#, python-format
+msgid ""
+"It seems like we couldn't find code\n"
+"                                        for the city of origin (%s).\n"
+"                                        Please, select it manually, choose "
+"another \n"
+"                                        address or another shipping method.\n"
+"                                    "
+msgstr ""
+
+#: .\izi_shipping\models.py:301
+#, python-brace-format
+msgid ""
+"Can't find destination city '{title}'\n"
+"                                      to calculate charge. \n"
+"                                      Errors: {errors}"
+msgstr ""
+
+#: .\izi_shipping\models.py:304
+#, python-format
+msgid ""
+"It seems like we can't find code\n"
+"                                        for the city of destination (%s).\n"
+"                                        Please, choose\n"
+"                                        another address or another shipping "
+"method.\n"
+"                                    "
+msgstr ""
+
+#: .\izi_shipping\models.py:310
+msgid "Also, you can choose city of destination manually"
+msgstr ""
+
+#: .\izi_shipping\models.py:315
+#, python-format
+msgid "Found too many destinations for given city (%s)"
+msgstr ""
+
+#: .\izi_shipping\models.py:317
+msgid "Please refine your shipping address"
+msgstr ""
+
+#: .\izi_shipping\models.py:322
+#, python-format
+msgid ""
+"Error occurred during charge\n"
+"                                        calculation for given city (%s)"
+msgstr ""
+
+#: .\izi_shipping\models.py:324
+#, python-format
+msgid "API error was: %s"
+msgstr ""
+
+#: .\izi_shipping\models.py:355
+msgid "API-based Shipping Method"
+msgstr ""
+
+#: .\izi_shipping\models.py:356
+msgid "API-based Shipping Methods"
+msgstr ""
+
+#: .\izi_shipping\models.py:361
+msgid "Name"
+msgstr ""
+
+#: .\izi_shipping\models.py:362
+msgid "Description"
+msgstr ""
+
+#: .\izi_shipping\models.py:364
+msgid "Image"
+msgstr ""
+
+#: .\izi_shipping\models.py:366
+msgid "Height, m"
+msgstr ""
+
+#: .\izi_shipping\models.py:369
+msgid "Width, m"
+msgstr ""
+
+#: .\izi_shipping\models.py:372
+msgid "Length, m"
+msgstr ""
+
+#: .\izi_shipping\models.py:375
+msgid "Max loading, kg"
+msgstr ""
+
+#: .\izi_shipping\models.py:387
+msgid "Shipping Container"
+msgstr ""
+
+#: .\izi_shipping\models.py:388
+msgid "Shipping Containers"
+msgstr ""
+
+#: .\izi_shipping\packers.py:96
+#, python-format
+msgid "virtual volume (%s)"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\details_form.html:7
+msgid "Oops! We found some errors:"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\details_form.html:25
+msgid "Oops! We found some errors"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\details_form.html:25
+msgid "please check the error messages below and try again"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\emspost_messages.html:3
+msgid ""
+"\n"
+"Details of shipping cost calculated by <strong>EMS</strong>\n"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\emspost_messages.html:8
+#: .\izi_shipping\templates\izi_shipping\partials\pecom_messages.html:17
+#, python-format
+msgid ""
+"\n"
+"From <strong>%(origin)s</strong> to <strong>%(destination)s</strong>.<br>\n"
+"Brutto: %(total_weight)s kg.<br>\n"
+"Items:"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\emspost_messages.html:14
+#, python-format
+msgid ""
+"\n"
+"<li>%(name)s ( %(weight)s kg, %(vol)sm<sup>3</sup>)</li>\n"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\emspost_messages.html:20
+#, python-format
+msgid ""
+"\n"
+"Estimated delivery time: from %(min)s to %(max)s days.\n"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\pecom_messages.html:3
+#, python-format
+msgid ""
+"\n"
+"Details of shipping cost calculated by <strong>PEC</strong>.\n"
+"Transport type: <b>%(name)s</b><br>\n"
+"including:\n"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\pecom_messages.html:23
+#, python-format
+msgid ""
+"\n"
+"\t\t<li>%(name)s ( %(weight)s kg, %(vol)sm<sup>3</sup>)</li>\n"
+"\t"
+msgstr ""
+
+#: .\izi_shipping\templates\izi_shipping\partials\pecom_options.html:4
+msgid "including:"
+msgstr ""
+
+#: .\izi_shipping\views.py:185
+#, python-format
+msgid "API is offline right now. Sorry. (%s)"
+msgstr ""
+
+#: .\izi_shipping\views.py:188
+#, python-format
+msgid "Calculator said: %s"
+msgstr ""

@@ -19,7 +19,7 @@ IZI_SHIPPING_DEFAULT_WEIGHT = 1
 IZI_SHIPPING_VOLUME_RATIO = D('1.3')
 
 # default city of origin to calculate shipping cost via APIs
-IZI_SHIPPING_DEFAULT_ORIGIN = u'Санкт-Петербург'
+IZI_SHIPPING_DEFAULT_ORIGIN = u'Hà Nội'
 
 IZI_SHIPPING_API_ENABLED = ['pecom', 'emspost']
 

@@ -13,28 +13,30 @@ from emspost_api import emspost
 
 from ..utils import del_key
 from .base import AbstractShippingFacade
-from ..exceptions import ( OriginCityNotFoundError, 
-                           CityNotFoundError, 
-                           ApiOfflineError, 
-                           TooManyFoundError,
-                           CalculationError )
+from ..exceptions import (OriginCityNotFoundError,
+                          CityNotFoundError,
+                          ApiOfflineError,
+                          TooManyFoundError,
+                          CalculationError)
 
 API_CALC_OPTIONS = {}
 
 
-API_OBJ_TYPES = {'cities'   : _("Russian Cities"),
-                 'regions'  : _("Regions of Russia"),
-                 'russia'   : _("All Russian Regions and Cities"),
-                 'country'  : _("Foreign Countries"),
+API_OBJ_TYPES = {'cities': _("Vietnam Cities"),
+                 'regions': _("Regions of Russia"),
+                 'russia': _("All Vietnam Regions and Cities"),
+                 'country': _("Foreign Countries"),
                  }
 
 
 precision = D('0.0000')
 
+
 class ShippingFacade(AbstractShippingFacade):
+    print("ShippingFacade of emspost ====>")
     name = 'emspost'
     messages_template = "izi_shipping/partials/emspost_messages.html"
-    
+
     def __init__(self, api_user=None, api_key=None):
         self.api = emspost.EmsAPI()
 
@@ -59,50 +61,47 @@ class ShippingFacade(AbstractShippingFacade):
                 return i[1]
         return None
 
-
-
     def get_charge(self, origin, dest, packs, options=None):
         res = errors = None
         if not options:
             options = API_CALC_OPTIONS
-            
+
         options['from'] = origin
         options['to'] = dest
         options['weight'] = 0
-        
+
         for pack in packs:
             options['weight'] += float(pack['weight'])
-        
+
         res, errors = self.api.calculate(options)
-        
-        if 'rsp' in res.keys() :
+
+        if 'rsp' in res.keys():
             if not res['rsp']['stat'] == 'ok':
-                raise CalculationError("%s(%s)" % (origin, dest), 
-                                       res['rsp']['err'])        
+                raise CalculationError("%s(%s)" % (origin, dest),
+                                       res['rsp']['err'])
             else:
                 res['rsp']['senderCityId'] = origin
                 res['rsp']['receiverCityId'] = dest
                 return res['rsp'], False
         else:
             errors = "No answer from API. Result was: %s" % res
-        return res, errors        
-        
-        
+        return res, errors
+
     def get_charges(self, weight, packs, origin, dest):
-        
+
         if not self.api.is_online():
             raise ApiOfflineError(_("Sorry. EMS API is offline right now"))
-        
+
         # EMS origin and destination city or branch codes
-        origin_code = dest_code = None  
-        
+        origin_code = dest_code = None
+
         calc_result = err = errors = None
         city = ''
         try:
             origin_code, dest_code = self.get_city_codes(origin, dest)
         except:
             raise
-       
+
         try:
             calc_result, err = self.get_charge(origin_code, dest_code, packs)
         except:
@@ -126,21 +125,21 @@ class ShippingFacade(AbstractShippingFacade):
         """
         origin_code = dest_code = None
         choices = []
-        
+
         if 'choices' in kwargs.keys():
             for r in kwargs['choices']:
                 choices.append((r[0], r[1]))
         kwargs['choices'] = choices
-                    
+
         if 'origin' in kwargs.keys():
             origin_code = self.get_cached_origin_code(kwargs.pop('origin'))
             if not 'initial' in kwargs.keys():
-                kwargs['initial'] = { 'senderCityId': origin_code }
+                kwargs['initial'] = {'senderCityId': origin_code}
             else:
-                kwargs['initial'].update({ 'senderCityId': origin_code })
+                kwargs['initial'].update({'senderCityId': origin_code})
 
-        # Return simple calculator form if no choices given: 
-        # assuming entered city not found in branches 
+        # Return simple calculator form if no choices given:
+        # assuming entered city not found in branches
         try:
             from .forms import EmsCalcForm
         except ImportError:
@@ -155,7 +154,7 @@ class ShippingFacade(AbstractShippingFacade):
         """
         origin_code = dest_code = None
         charge, messages, errors, extra_form = 0, '', '', None
-        
+
         origin = kwargs.get('origin', '')
         dest = kwargs.get('dest', '')
         if hasattr(dest, 'city'):
@@ -164,47 +163,48 @@ class ShippingFacade(AbstractShippingFacade):
         packs = kwargs.get('packs', [])
         options = kwargs.get('options', False)
 
-        if results and results['price']>0:
+        if results and results['price'] > 0:
             origin_code = results['senderCityId']
             dest_code = results['receiverCityId']
             charge = D(results['price'])
 
-            msg_ctx = {'origin' : origin,
-                       'destination' :  dest,
-                       'total_weight' : D(weight).quantize(precision),
-                       'packs' : packs,
+            msg_ctx = {'origin': origin,
+                       'destination':  dest,
+                       'total_weight': D(weight).quantize(precision),
+                       'packs': packs,
                        }
 
             extra_form = self.get_extra_form(initial={'senderCityId': origin_code,
                                                       'receiverCityId': dest_code, })
             if 'term' in results.keys():
-                msg_ctx['time_min'], msg_ctx['time_max'] = (results['term']['min'], 
+                msg_ctx['time_min'], msg_ctx['time_max'] = (results['term']['min'],
                                                             results['term']['max'])
-                
+
             messages = render_to_string(self.messages_template, msg_ctx)
         else:
             errors += "Errors during facade.get_charges() method %s" % results
         return charge, messages, errors, extra_form
-    
+
     def get_queryset(self):
         """ Return normalized queryset-like list of dicts
             { 'id' : <city code>, 'branch' : <branch title>, 'text': <city title> }
         """
+        print("=======> Calling to EMSPOST Facade ->get_queryset", self)
         branch_title = ''
         branch_id = ''
         n_qs = []
         qs = self.get_all_branches()
-        
+
         if not qs:
             return []
-         
+
         for item in qs:
-            n_qs.append({'id' : item[0],
-                             'type' : item[2],
-                             'text' : item[1],
-                                      })
+            n_qs.append({'id': item[0],
+                         'type': item[2],
+                         'text': item[1],
+                         })
         return n_qs
-    
+
     def format_objects(self, qs):
         """ Prepare data for select2 grouped option list.
             Return smth like 
@@ -214,10 +214,12 @@ class ShippingFacade(AbstractShippingFacade):
                   ...
                 },...]
         """
+        print("=======> Calling to EMSPOST Facade ->format_objects", self)
         res = []
-        chld = [] 
+        chld = []
         # Sort list of dicts by 'type' field
-        key = lambda k: k['type']
+
+        def key(k): return k['type']
         qs = sorted(qs, key=key)
         # Group it by 'type' field
         for k, g in itertools.groupby(qs, key):
@@ -225,7 +227,7 @@ class ShippingFacade(AbstractShippingFacade):
             # Remove unnec data
             for c in chld:
                 del_key(c, 'type')
-            res.append({'text' : "%s:" % unicode(API_OBJ_TYPES[k]), 
-                        'children' : chld,
-                    })
+            res.append({'text': "%s:" % unicode(API_OBJ_TYPES[k]),
+                        'children': chld,
+                        })
         return res

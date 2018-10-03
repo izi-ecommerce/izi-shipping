@@ -2,6 +2,6 @@
 Usage
 ========
 
-To use django-izi-shipping in a project::
+To use izi-shipping in a project::
 
-    import django-izi-shipping
+    import izi-shipping

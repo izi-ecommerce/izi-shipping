@@ -36,6 +36,14 @@ class CityLookupView(CheckoutSessionMixin, View):
     """JSON lookup view for objects retrieved via REST API.
         Returns select2 compatible list.
     """
+
+    # method, api_user, api_key - TODO: Must check for this - Should get value based on settings and environments
+    def __init__(self):
+        self.method = 'api_type'
+        self.api_user = 'api_user'
+        self.api_key = 'api_key'
+        # self.model = model
+
     def filter(self, data, predicate=lambda k, v: True):
         """
             Attempt to mimic django's queryset.filter() for simple lists
@@ -47,19 +55,20 @@ class CityLookupView(CheckoutSessionMixin, View):
             for k, v in d.items():
                 if predicate(k, v):
                     yield d
-    
+
     def get_queryset(self):
         """ Return normalized queryset-like list of dicts
             { 'id' : <city code>, 'branch' : <branch title>, 'text': <city title> }
         """
         # Skip all not api-based methods
+        # self.method
         if not hasattr(self.method, 'api_type'):
             return []
-        
+
         self.facade = api_modules_pool[self.method.api_type].\
             ShippingFacade(self.method.api_user, self.method.api_key)
         return self.facade.get_queryset()
-         
+
     def format_object(self, qs):
         """ Prepare data for select2 option list.
             Should return smth like 
@@ -69,6 +78,9 @@ class CityLookupView(CheckoutSessionMixin, View):
                   ...
                 },...]
         """
+        # self.request.method.api_type, self.method.api_user, self.method.api_key
+        self.facade = api_modules_pool['emspost'].\
+            ShippingFacade('api_user_demo', 'api_key_test')
         return self.facade.format_objects(qs)
 
     def initial_filter(self, qs, value):
@@ -100,7 +112,7 @@ class CityLookupView(CheckoutSessionMixin, View):
         for m in self.get_available_shipping_methods():
             if m.code == method_code:
                 self.method = m
-        
+
         qs = self.get_queryset()
 
         initial, q, page, page_limit = self.get_args()
@@ -112,12 +124,11 @@ class CityLookupView(CheckoutSessionMixin, View):
             if q:
                 qs = list(self.lookup_filter(qs, q))
             qs, more = self.paginate(qs, page, page_limit)
-
         return HttpResponse(json.dumps({
             'results': self.format_object(qs),
             'more': more,
         }), content_type='application/json')
-        
+
 
 class ShippingDetailsView(CheckoutSessionMixin, View):
     """
@@ -125,7 +136,7 @@ class ShippingDetailsView(CheckoutSessionMixin, View):
     Usage exapmle: 
     /shipping/details/pek/?from=[ORIGIN_CODE]&to=[DESTINATION_CODE]
     """
-    # TODO: replace static field with get_template() 
+    # TODO: replace static field with get_template()
     # method for easier customising
     template = "izi_shipping/partials/details_form.html"
 
@@ -137,7 +148,7 @@ class ShippingDetailsView(CheckoutSessionMixin, View):
     def json_response(self, ctx, flash_messages):
         payload = {
             'messages': flash_messages.as_dict(),
-            'content_html': render_to_string(self.template, ctx),}
+            'content_html': render_to_string(self.template, ctx), }
         if 'charge' in ctx:
             payload['charge'] = currency(ctx['charge'])
         if 'method_code' in ctx:
@@ -161,13 +172,14 @@ class ShippingDetailsView(CheckoutSessionMixin, View):
                 ctx['method_code'] = method_code
         if not method:
             return HttpResponseBadRequest('Bad shipping method code!')
-        facade = api_modules_pool[method.api_type].ShippingFacade(method.api_user, method.api_key)
+        facade = api_modules_pool[method.api_type].ShippingFacade(
+            method.api_user, method.api_key)
         fromID, toID = self.get_args()
         if not fromID or not toID:
             return HttpResponseBadRequest('Required parameters not found in the query string!')
         origin = facade.get_by_code(fromID)
         dest = facade.get_by_code(toID)
-       
+
         scale = Scale(attribute_code=method.weight_attribute,
                       default_weight=method.default_weight)
         packer = Packer(method.containers,
@@ -176,7 +188,7 @@ class ShippingDetailsView(CheckoutSessionMixin, View):
                         default_weight=method.default_weight)
         weight = scale.weigh_basket(request.basket)
         # Should be a list of dicts { 'weight': weight, 'container' : container }
-        packs = packer.pack_basket(request.basket)  
+        packs = packer.pack_basket(request.basket)
         flash_messages = ajax.FlashMessages()
 
         try:
@@ -194,7 +206,7 @@ class ShippingDetailsView(CheckoutSessionMixin, View):
                                                                             weight=weight,
                                                                             packs=packs)
             if extra_form and not api_messages:
-                ctx['form'] = extra_form 
+                ctx['form'] = extra_form
             else:
                 ctx['charge'] = charge
                 ctx['messages'] = api_messages

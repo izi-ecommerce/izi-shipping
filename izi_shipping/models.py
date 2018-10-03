@@ -22,20 +22,24 @@ from .exceptions import (OriginCityNotFoundError,
                          TooManyFoundError,
                          CalculationError)
 
-weight_precision = getattr(settings, 'IZI_SHIPPING_WEIGHT_PRECISION', D('0.000')) 
-volume_precision = getattr(settings, 'IZI_SHIPPING_VOLUME_PRECISION', D('0.000'))
+weight_precision = getattr(
+    settings, 'IZI_SHIPPING_WEIGHT_PRECISION', D('0.000'))
+volume_precision = getattr(
+    settings, 'IZI_SHIPPING_VOLUME_PRECISION', D('0.000'))
 
 Scale = loading.get_class('shipping.scales', 'Scale')
 
-DEFAULT_ORIGIN = getattr(settings, 'IZI_SHIPPING_DEFAULT_ORIGIN', 'Saint-Petersburg')
+DEFAULT_ORIGIN = getattr(settings, 'IZI_SHIPPING_DEFAULT_ORIGIN', 'Hà Nội')
 
-API_ENABLED = getattr(settings, 'IZI_SHIPPING_API_ENABLED', ['pecom', 'emspost'])
+API_ENABLED = getattr(settings, 'IZI_SHIPPING_API_ENABLED', [
+                      'pecom', 'emspost'])
 
-API_AVAILABLE = {'pecom': _('PEC API ver. 1.0'), 
-                 'emspost': _('EMS Russian Post REST API'),
-                 'dhl': _('DHL API (not ready yet)'),
-                 'usps': _('USPS API (not ready yet)'),
-                 }
+API_AVAILABLE = {
+    'pecom': _('PEC API ver. 1.0'),
+    'emspost': _('EMS VietNam Post REST API'),
+    'dhl': _('DHL API (not ready yet)'),
+    'usps': _('USPS API (not ready yet)'),
+}
 
 CHANGE_DESTINATION = getattr(settings, 'IZI_SHIPPING_CHANGE_DESTINATION', True)
 
@@ -44,10 +48,13 @@ def get_api_modules():
     res = {}
     for name in API_AVAILABLE.keys():
         try:
-            res[name] = importlib.import_module(".facade.%s" % name, __package__)
-        except ImportError:
-            pass 
+            res[name] = importlib.import_module(
+                ".facade.%s" % name, __package__)
+        except ImportError as e:
+            print("ImportError get_api_modules ERROR ======> get_api_modules ===>", e)
+            pass
     return res
+
 
 api_modules_pool = get_api_modules()
 
@@ -65,13 +72,13 @@ class ShippingCompanyManager(models.Manager):
 
 
 class AvailableCompanyManager(ShippingCompanyManager):
-    
+
     def get_queryset(self):
         """
         Filter out inactive methods (shipping companies with outdated contracts etc)
         """
         return super(AvailableCompanyManager, self).get_queryset().filter(is_active=True)
-    
+
     def for_address(self, addr):
         """
         Pre-populate destination field with the given address
@@ -90,7 +97,7 @@ class AvailableCompanyManager(ShippingCompanyManager):
 
 class ShippingCompany(AbstractWeightBased):
     """Shipping methods based on cargo companies APIs.
-    """ 
+    """
     size_attributes = ('width', 'height', 'length')
 
     destination = None  # not stored field used for charge calculation
@@ -116,10 +123,11 @@ class ShippingCompany(AbstractWeightBased):
     api_user = models.CharField(_("API username"), max_length=64, blank=True)
     api_key = models.CharField(_("API key"), max_length=255, blank=True)
     api_type = models.CharField(verbose_name=_('API type'),
-                                max_length=10, 
-                                choices=get_enabled_api(), 
+                                max_length=10,
+                                choices=get_enabled_api(),
                                 blank=True)
-    origin = models.CharField(_("City of origin"), max_length=255, blank=True, default=DEFAULT_ORIGIN)
+    origin = models.CharField(
+        _("City of origin"), max_length=255, blank=True, default=DEFAULT_ORIGIN)
     is_active = models.BooleanField(_('active'), default=False,
                                     help_text=_('Use this method in checkout?'))
 
@@ -136,9 +144,10 @@ class ShippingCompany(AbstractWeightBased):
 
     containers = models.ManyToManyField("ShippingContainer",
                                         blank=True,
-                                        related_name='containers', 
+                                        related_name='containers',
                                         verbose_name=_('Containers or boxes'),
-                                        help_text=_('Containers or boxes could be used for packing')
+                                        help_text=_(
+                                            'Containers or boxes could be used for packing')
                                         )
 
     destination_whitelist = models.TextField(verbose_name=_('Destination codes whitelist'),
@@ -165,7 +174,8 @@ class ShippingCompany(AbstractWeightBased):
         self.messages = []
         self.errors = []
         if self.api_type:
-            self.facade = api_modules_pool[self.api_type].ShippingFacade(self.api_user, self.api_key)
+            self.facade = api_modules_pool[self.api_type].ShippingFacade(
+                self.api_user, self.api_key)
 
     @property
     def is_prepaid(self):
@@ -194,7 +204,8 @@ class ShippingCompany(AbstractWeightBased):
         flags = []
         if self.destination_whitelist:
             for code in dest_codes:
-                flags.append(code in self.destination_whitelist.split(self.LIST_SEPARATOR))
+                flags.append(code in self.destination_whitelist.split(
+                    self.LIST_SEPARATOR))
             if all(flags):
                 return True
             elif any(flags):
@@ -204,7 +215,8 @@ class ShippingCompany(AbstractWeightBased):
         flags = []
         if self.destination_blacklist:
             for code in dest_codes:
-                flags.append(code in self.destination_blacklist.split(self.LIST_SEPARATOR))
+                flags.append(code in self.destination_blacklist.split(
+                    self.LIST_SEPARATOR))
             if all(flags):
                 return False
             else:
@@ -225,39 +237,42 @@ class ShippingCompany(AbstractWeightBased):
                       default_weight=self.default_weight)
         packer = Packer(self.containers,
                         attribute_codes=self.size_attributes,
-                        weight_code=self.weight_attribute, 
+                        weight_code=self.weight_attribute,
                         default_weight=self.default_weight)
         weight = scale.weigh_basket(basket).quantize(weight_precision)
         # Should be a list of dicts { 'weight': weight, 'container' : container }
-        packs = packer.pack_basket(basket)  
+        packs = packer.pack_basket(basket)
         facade = self.facade
-        if not self.destination: 
-            self.errors.append(_("ERROR! There is no shipping address for charge calculation!\n"))
+        if not self.destination:
+            self.errors.append(
+                _("ERROR! There is no shipping address for charge calculation!\n"))
         else:
             self.messages.append(_(u"""Approximated shipping price
                                 for {weight} kg from {origin} 
-                                to {destination}\n""").format(weight=weight, 
+                                to {destination}\n""").format(weight=weight,
                                                               origin=self.origin,
                                                               destination=self.destination.city))
-            
+
             # Assuming cases like http protocol suggests:
             # e=200  - OK. Result contains charge value and extra info such as Branch code, etc
-            # e=404  - Result is empty, no destination found via API, redirect 
+            # e=404  - Result is empty, no destination found via API, redirect
             #          to address form or prompt to API city-codes selector
             # e=503  - API is offline. Skip this method.
-            # e=300  - Too many choices found, Result contains list of charges-codes. 
-            #          Prompt to found dest-codes selector  
+            # e=300  - Too many choices found, Result contains list of charges-codes.
+            #          Prompt to found dest-codes selector
 
             # an URL for AJAXed city-to-city charge lookup
-            details_url = reverse_lazy('shipping:charge-details', kwargs={'slug': self.code})
+            details_url = reverse_lazy(
+                'shipping:charge-details', kwargs={'slug': self.code})
             # an URL for AJAXed code by city lookup using Select2 widget
-            lookup_url = reverse_lazy('shipping:city-lookup', kwargs={'slug': self.code})
-            
-            # if options set make a short call to API for final calculation  
+            lookup_url = reverse_lazy(
+                'shipping:city-lookup', kwargs={'slug': self.code})
+
+            # if options set make a short call to API for final calculation
             if options:
                 errors = None
                 try:
-                    results, errors = facade.get_charge(options['senderCityId'], 
+                    results, errors = facade.get_charge(options['senderCityId'],
                                                         options['receiverCityId'],
                                                         packs)
                 except CalculationError as e:
@@ -274,17 +289,19 @@ class ShippingCompany(AbstractWeightBased):
                     if err:
                         self.errors.append(err)
                 else:
-                    raise CalculationError("%s -> %s" % (options['senderCityId'], 
-                                                         options['receiverCityId']), 
+                    raise CalculationError("%s -> %s" % (options['senderCityId'],
+                                                         options['receiverCityId']),
                                            errors)
-            else:            
-                try:          
-                    results = facade.get_charges(weight, packs, self.origin, self.destination)
+            else:
+                try:
+                    results = facade.get_charges(
+                        weight, packs, self.origin, self.destination)
                 except ApiOfflineError:
                     self.errors.append(_(u"""%s API is offline. Can't
                                          calculate anything. Sorry!""") % self.name)
-                    self.messages.append(_(u"Please, choose another shipping method!"))
-                except OriginCityNotFoundError as e: 
+                    self.messages.append(
+                        _(u"Please, choose another shipping method!"))
+                except OriginCityNotFoundError as e:
                     # Paranoid mode as ImproperlyConfigured should be raised by facade
                     self.errors.append(_(u"""City of origin '%s' not found
                                       in the shipping company 
@@ -295,9 +312,11 @@ class ShippingCompany(AbstractWeightBased):
                                         address or another shipping method.
                                     """) % e.title)
                 except ImproperlyConfigured as e:  # upraised error handling
-                    self.errors.append("ImproperlyConfigured error (%s)" % e.message)
-                    self.messages.append("Please, select another shipping method or call site administrator!")
-                except CityNotFoundError as e: 
+                    self.errors.append(
+                        "ImproperlyConfigured error (%s)" % e.message)
+                    self.messages.append(
+                        "Please, select another shipping method or call site administrator!")
+                except CityNotFoundError as e:
                     self.errors.append(_(u"""Can't find destination city '{title}'
                                       to calculate charge. 
                                       Errors: {errors}""").format(title=e.title, errors=e.errors))
@@ -307,14 +326,17 @@ class ShippingCompany(AbstractWeightBased):
                                         another address or another shipping method.
                                     """) % e.title)
                     if CHANGE_DESTINATION:
-                        self.messages.append(_("Also, you can choose city of destination manually"))
+                        self.messages.append(
+                            _("Also, you can choose city of destination manually"))
                         self.extra_form = facade.get_extra_form(origin=self.origin,
                                                                 lookup_url=lookup_url,
                                                                 details_url=details_url)
                 except TooManyFoundError as e:
-                    self.errors.append(_(u"Found too many destinations for given city (%s)") % e.title)
+                    self.errors.append(
+                        _(u"Found too many destinations for given city (%s)") % e.title)
                     if CHANGE_DESTINATION:
-                        self.messages.append(_("Please refine your shipping address"))
+                        self.messages.append(
+                            _("Please refine your shipping address"))
                         self.extra_form = facade.get_extra_form(origin=self.origin,
                                                                 choices=e.results,
                                                                 details_url=details_url)
@@ -339,16 +361,16 @@ class ShippingCompany(AbstractWeightBased):
                         self.messages.append(msg)
                     if err:
                         self.errors.append(err)
-        
+
         # Zero tax is assumed...
         return prices.Price(
             currency=basket.currency,
             excl_tax=charge,
             incl_tax=charge)
-    
+
     def set_destination(self, addr):
         self.destination = addr
-        
+
     class Meta(AbstractWeightBased.Meta):
         abstract = False
         app_label = 'shipping'
@@ -374,14 +396,14 @@ class ShippingContainer(models.Model):
     max_load = models.DecimalField(
         _("Max loading, kg"), decimal_places=3, max_digits=12,
         validators=[MinValueValidator(D('0.00'))])
-    
+
     def __str__(self):
         return self.name
-    
+
     @property
     def volume(self):
         return D(self.height*self.width*self.length).quantize(volume_precision)
-    
+
     class Meta:
         app_label = 'shipping'
         verbose_name = _("Shipping Container")
