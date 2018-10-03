@@ -2,11 +2,11 @@
 django-izi-shipping
 =============================
 
-.. image:: https://travis-ci.org/okfish/django-izi-shipping.png?branch=master
-    :target: https://travis-ci.org/okfish/django-izi-shipping
+.. image:: https://travis-ci.org/izi-ecommerce/izi-shipping.png?branch=master
+    :target: https://travis-ci.org/izi-ecommerce/izi-shipping
 
-.. image:: https://coveralls.io/repos/okfish/django-izi-shipping/badge.png?branch=master
-    :target: https://coveralls.io/r/okfish/django-izi-shipping?branch=master
+.. image:: https://coveralls.io/repos/izi-ecommerce/izi-shipping/badge.png?branch=master
+    :target: https://coveralls.io/r/izi-ecommerce/izi-shipping?branch=master
 
 
 API-based shipping app for the IZI Ecommerce project. 
@@ -17,14 +17,14 @@ Supports APIs for some post services and companies, such as EMS Russian Post, PE
 Documentation
 -------------
 
-The full documentation will be available soon at https://django-izi-shipping.readthedocs.org.
+The full documentation will be available soon at https://izi-shipping.readthedocs.org.
 
 Quickstart
 ----------
 
 Install django-izi-shipping::
 
-    pip install -e git+https://github.com/okfish/django-izi-shipping/django-izi-shipping.git#egg=dajngo-izi-shipping
+    pip install -e git+https://github.com/izi-ecommerce/izi-shipping/izi-shipping.git#egg=izi-shipping
 
 then add 'izi_shipping' to the INSTALLED_APPS. From now you can override IZI's shipping app
 using izi_shipping within your project
@@ -71,11 +71,11 @@ Dependencies
 
 Install pecomsdk if you would like enable pecom shipping facade::
 
-	pip install -e git+https://github.com/okfish/pecomsdk/pecomsdk.git#egg=pecomsdk
+	pip install -e git+https://github.com/izi-ecommerce/pecomsdk/pecomsdk.git#egg=pecomsdk
 
 Install py-emspost-api if you would like enable ems shipping facade::
 
-	pip install -e git+https://github.com/okfish/py-emspost-api/py-emspost-api.git#egg=py-emspost-api
+	pip install -e git+https://github.com/izi-ecommerce/py-emspost-api/py-emspost-api.git#egg=py-emspost-api
 
 
 Features

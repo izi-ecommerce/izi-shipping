@@ -9,7 +9,8 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import reverse_lazy
+
+from django.urls import reverse_lazy
 
 from izi.apps.shipping.abstract_models import AbstractWeightBased
 from izi.core import prices, loading
