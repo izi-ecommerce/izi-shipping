@@ -32,7 +32,7 @@ class CheckoutSessionMixin(CoreCheckoutSessionMixin):
 
     def get_shipping_kwargs(self):
         return self.checkout_session._get('shipping', 'options')
-    
+
     def get_shipping_charge(self, basket):
         shipping_charge = prices.Price(
             currency=basket.currency, excl_tax=D('0.00'), incl_tax=D('0.00'))
@@ -41,7 +41,8 @@ class CheckoutSessionMixin(CoreCheckoutSessionMixin):
             basket, shipping_address)
         if shipping_method:
             shipping_kwargs = self.get_shipping_kwargs()
-            shipping_charge = shipping_method.calculate(basket, shipping_kwargs or None)
+            shipping_charge = shipping_method.calculate(
+                basket, shipping_kwargs or None)
         else:
             # It's unusual to get here as a shipping method should be set by
             # the time this skip-condition is called. In the absence of any
@@ -52,10 +53,10 @@ class CheckoutSessionMixin(CoreCheckoutSessionMixin):
 
     def skip_unless_payment_is_required(self, request):
         # Check to see if payment is actually required for this order.
-        
+
         shipping_charge = self.get_shipping_charge(request.basket)
         total = self.get_order_totals(request.basket, shipping_charge)
-        
+
         if total.excl_tax == D('0.00'):
             raise exceptions.PassedSkipCondition(
                 url=reverse('checkout:preview')
@@ -84,7 +85,8 @@ class CheckoutSessionMixin(CoreCheckoutSessionMixin):
             # add shipping charge if only method has prepaid payment type set as true
             # or has not payment_type attr (for simple methods)
             if is_prepaid_shipping(shipping_method):
-                shipping_charge = shipping_method.calculate(basket, shipping_kwargs or None)
+                shipping_charge = shipping_method.calculate(
+                    basket, shipping_kwargs or None)
             total = self.get_order_totals(
                 basket, shipping_charge=shipping_charge)
         submission = {
@@ -98,7 +100,7 @@ class CheckoutSessionMixin(CoreCheckoutSessionMixin):
             # Details for shipping charge
             'order_kwargs': {},
             'payment_kwargs': {}}
-        
+
         # If there is a billing address, add it to the payment kwargs as calls
         # to payment gateways generally require the billing address. Note, that
         # it normally makes sense to pass the form instance that captures the
@@ -116,5 +118,5 @@ class CheckoutSessionMixin(CoreCheckoutSessionMixin):
                 'guest_email' not in submission['order_kwargs']):
             email = self.checkout_session.get_guest_email()
             submission['order_kwargs']['guest_email'] = email
-        
+
         return submission

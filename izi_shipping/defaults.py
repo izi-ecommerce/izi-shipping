@@ -3,16 +3,18 @@ from decimal import Decimal as D
 
 IZI_SHIPPING_WEIGHT_PRECISION = D('0.000')
 
-IZI_SHIPPING_VOLUME_PRECISION = D('0.000') 
+IZI_SHIPPING_VOLUME_PRECISION = D('0.000')
 
 # per product defaults
 # 0.1m x 0.1m x 0.1m
-IZI_SHIPPING_DEFAULT_BOX = {'width': float('0.1'),
-                              'height': float('0.1'),
-                              'length': float('0.1')}
+IZI_SHIPPING_DEFAULT_BOX = {
+    'width': float('0.1'),
+    'height': float('0.1'),
+    'length': float('0.1')
+}
 
-# 1 Kg 
-IZI_SHIPPING_DEFAULT_WEIGHT = 1 
+# 1 Kg
+IZI_SHIPPING_DEFAULT_WEIGHT = 1
 
 # basket volume * VOLUME_RATIO = estimated container(s) volume
 # very simple method

@@ -25,10 +25,10 @@ CITY_PREFIX_SEPARATOR = getattr(settings, 'IZI_CITY_PREFIX_SEPARATOR', None)
 
 
 class AbstractShippingFacade(object):
-    
+
     # instantiated API class from corresponding package
     # should be initiated in __init__
-    api = None 
+    api = None
     name = ''
 
     def get_cached_origin_code(self, origin):
@@ -55,8 +55,9 @@ class AbstractShippingFacade(object):
         codes = []
         res = []
         cache_key = ':'.join([self.name, city])
-        
-        res = cache.get(cache_key)  # should returns list of tuples like facade do but as json
+
+        # should returns list of tuples like facade do but as json
+        res = cache.get(cache_key)
         if not res:
             res, errors = self.api.findbytitle(city)
             if not errors:
@@ -65,12 +66,12 @@ class AbstractShippingFacade(object):
                 res = []
         else:
             res = json.loads(res)
-        
+
         codes = [r[0] for r in res]
         if len(codes) > 1:
-            # return full API answer to let user make a choice 
+            # return full API answer to let user make a choice
             errors = res
-        
+
         return codes, errors
 
     def clean_city_name(self, city):
@@ -86,26 +87,28 @@ class AbstractShippingFacade(object):
         """
             Returns tuple of verified origin and destination codes
         """
-        origin_code = None # city or branch code 
+        origin_code = None  # city or branch code
         dest_codes = []    # city or branch codes list
         calc_result = err = errors = None
         city = ''
 
-        origin_code = self.validate_code(origin) or self.get_cached_origin_code(origin)
+        origin_code = self.validate_code(
+            origin) or self.get_cached_origin_code(origin)
         if origin_code is None:
             raise OriginCityNotFoundError(origin)
-        
+
         dest_codes.append(self.validate_code(dest))
         if not dest_codes[0]:
             city = dest.line4
-            region = dest.state        
+            region = dest.state
             if not city:
                 raise CityNotFoundError('city_not_set')
-            dest_codes, errors = self.get_cached_codes(self.clean_city_name(city))
-        
+            dest_codes, errors = self.get_cached_codes(
+                self.clean_city_name(city))
+
         if not dest_codes:
             raise CityNotFoundError(city or dest, errors)
-        if len(dest_codes) > 1: 
+        if len(dest_codes) > 1:
             raise TooManyFoundError(city or dest, errors)
         else:
             return origin_code, dest_codes[0]
@@ -122,7 +125,7 @@ class AbstractShippingFacade(object):
                 res = []
         else:
             res = json.loads(res)
-        
+
         return errors or res
 
     def get_by_code(self, code):
@@ -133,7 +136,7 @@ class AbstractShippingFacade(object):
             Subclasses should implement it.
         """
         raise NotImplementedError
-    
+
     def get_extra_form(self, *args, **kwargs):
         """
         Return additional form if ambiguous data posted 
@@ -147,41 +150,41 @@ class AbstractShippingFacade(object):
         """
             Returns False if code is not valid PEC city code,
             if not, returns code casted to int
-            
+
             Subclasses should implement it.
         """
         raise NotImplementedError
-    
+
     def get_charges(self, weight, packs, origin, dest):
         """
             Subclasses should implement it.
         """
         raise NotImplementedError
-    
+
     def get_charge(self, origin, dest, packs, options=None):
         """
             Subclasses should implement it.
         """
         raise NotImplementedError
-    
+
     def parse_results(self, results, **kwargs):
         """
             Parses results returned by get_charges() method.
             Get some additional kwargs for detailed info or extra form.
             Returns tuple (charge, messages, errors, extra_form)
-            
+
             Subclasses should implement it.
         """
         raise NotImplementedError
-    
+
     def get_queryset(self):
         """ Return normalized queryset-like list of dicts
             { 'id' : <city code>, 'branch' : <branch title>, 'text': <city title> }
-            
+
             Subclasses should implement it.
         """
         raise NotImplementedError
-    
+
     def format_objects(self, qs):
         """ Prepare data for select2 option list.
             Should return smth like grouped
@@ -194,7 +197,7 @@ class AbstractShippingFacade(object):
                 [{ 'id' : <city_id>, 
                     'text' : <city_name> },...]
              for non-categorized lists.
-                     
+
             Subclasses should implement it.
         """
         raise NotImplementedError

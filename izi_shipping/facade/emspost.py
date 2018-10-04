@@ -33,7 +33,7 @@ precision = D('0.0000')
 
 
 class ShippingFacade(AbstractShippingFacade):
-    print("ShippingFacade of emspost ====>")
+    print("ShippingFacade of emspost has been loaded!")
     name = 'emspost'
     messages_template = "izi_shipping/partials/emspost_messages.html"
 

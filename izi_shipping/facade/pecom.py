@@ -13,11 +13,11 @@ from pecomsdk import pecom
 
 from ..utils import del_key
 from .base import AbstractShippingFacade
-from ..exceptions import ( OriginCityNotFoundError, 
-                           CityNotFoundError, 
-                           ApiOfflineError, 
-                           TooManyFoundError,
-                           CalculationError )
+from ..exceptions import (OriginCityNotFoundError,
+                          CityNotFoundError,
+                          ApiOfflineError,
+                          TooManyFoundError,
+                          CalculationError)
 
 PECOM_CALC_OPTIONS = {}
 
@@ -25,7 +25,8 @@ PECOM_TRANSPORT_TYPES = {1: _('Auto'),
                          2: _('Avia'),
                          }
 
-weight_precision = getattr(settings, 'IZI_SHIPPING_WEIGHT_PRECISION', D('0.000')) 
+weight_precision = getattr(
+    settings, 'IZI_SHIPPING_WEIGHT_PRECISION', D('0.000'))
 
 
 def to_int(val):
@@ -38,15 +39,17 @@ def to_int(val):
 
 
 class ShippingFacade(AbstractShippingFacade):
+    print("ShippingFacade of pecom has been loaded!")
     name = 'pecom'
     messages_template = "izi_shipping/partials/pecom_messages.html"
-    
+
     def __init__(self, api_user=None, api_key=None):
         if api_user is not None and api_key is not None:
             self.api_user, self.api_key = api_user, api_key
             self.api = pecom.PecomCabinet(api_user, api_key)
         else:
-            raise ImproperlyConfigured("No api credits specified for the shipping method 'pecom'")
+            raise ImproperlyConfigured(
+                "No api credits specified for the shipping method 'pecom'")
 
     def validate_code(self, code):
         """
@@ -83,28 +86,28 @@ class ShippingFacade(AbstractShippingFacade):
                 if city_id == code_int:
                     return item['title']
         return None
-    
+
     def get_charge(self, origin, dest, packs, options=None):
-        res = [] 
+        res = []
         errors = None
         if not options:
             options = PECOM_CALC_OPTIONS
-            
+
         options['senderCityId'] = origin
         options['receiverCityId'] = dest
         options['Cargos'] = []
         for pack in packs:
-            options['Cargos'].append({"length": float(pack['container'].length), 
-                                      "width": float(pack['container'].width), 
+            options['Cargos'].append({"length": float(pack['container'].length),
+                                      "width": float(pack['container'].width),
                                       "height": float(pack['container'].height),
-                                      "volume": float(pack['container'].volume), 
+                                      "volume": float(pack['container'].volume),
                                       "maxSize": 3.2,
-                                      "isHP": False, 
-                                      "sealingPositionsCount": 0, 
+                                      "isHP": False,
+                                      "sealingPositionsCount": 0,
                                       "weight": float(pack['weight']),
                                       "overSize": False
                                       })
-        
+
         res, errors = self.api.calculate(options)
         # FIXME: if no result has been returned there should be an issue like
         # 'NoneType' object does not support item assignment
@@ -117,7 +120,7 @@ class ShippingFacade(AbstractShippingFacade):
         origin_code = dest_code = None  # origin and destination city codes
         calc_result = err = None
         city = ''
-        
+
         try:
             origin_code, dest_code = self.get_city_codes(origin, dest)
         except:
@@ -128,12 +131,12 @@ class ShippingFacade(AbstractShippingFacade):
             return err
         elif 'hasError' in calc_result.keys():
             if calc_result['hasError']:
-                raise CalculationError("%s(%s)" % (city, dest_code), 
+                raise CalculationError("%s(%s)" % (city, dest_code),
                                        calc_result['errorMessage'])
             elif len(calc_result['transfers']) > 0:
 
                 return calc_result
-            else:   
+            else:
                 raise CalculationError(city, "Strange. No error found"
                                              "but no result present. DEBUG: %s" % calc_result)
         elif 'error' in calc_result.keys():
@@ -144,7 +147,7 @@ class ShippingFacade(AbstractShippingFacade):
             raise CalculationError(city, """Strange. Seems like 
                                             no error field and no results 
                                             found via API. DEBUG: %s""" % calc_result)
-    
+
     def get_extra_form(self, *args, **kwargs):
         """
         Return additional form if ambiguous data posted 
@@ -169,20 +172,20 @@ class ShippingFacade(AbstractShippingFacade):
                            }
                     options.append(opt)
             kwargs['options'] = options
-    
+
         if 'choices' in kwargs.keys():
             for r in kwargs['choices']:
-                choices.append((r[0], "%s (%s)" % (r[2], r[1]) ))
+                choices.append((r[0], "%s (%s)" % (r[2], r[1])))
         kwargs['choices'] = choices
-        
+
         if 'origin' in kwargs.keys():
             origin_code = self.get_cached_origin_code(kwargs.pop('origin'))
             if not 'initial' in kwargs.keys():
                 kwargs['initial'] = {'senderCityId': origin_code}
             else:
                 kwargs['initial'].update({'senderCityId': origin_code})
-        # Return simple calculator form if no choices given: 
-        # assuming entered city not found in branches 
+        # Return simple calculator form if no choices given:
+        # assuming entered city not found in branches
         try:
             from .forms import PecomCalcForm
         except ImportError:
@@ -200,7 +203,7 @@ class ShippingFacade(AbstractShippingFacade):
         """
         origin_code = dest_code = None
         charge, messages, errors, extra_form = 0, '', '', None
-        
+
         origin = kwargs.get('origin', '')
         dest = kwargs.get('dest', '')
         if hasattr(dest, 'city'):
@@ -208,23 +211,23 @@ class ShippingFacade(AbstractShippingFacade):
         weight = kwargs.get('weight', 1)
         packs = kwargs.get('packs', [])
         options = kwargs.get('options', {})
-        
+
         if options:
             if 'hasError' in results.keys() and not results['hasError']:
                 for r in results['transfers']:
                     if r['transportingType'] == options['transportingType']:
                         messages = ''
                         return D(r['costTotal']), messages, errors, None
-                        
+
             else:
-                raise CalculationError("%s -> %s" % (options['senderCityId'], 
-                                                     options['receiverCityId']), 
+                raise CalculationError("%s -> %s" % (options['senderCityId'],
+                                                     options['receiverCityId']),
                                        results['errorMessage'])
-        
+
         if results is not None and len(results['transfers']) > 0:
             origin_code = results['senderCityId']
             dest_code = results['receiverCityId']
-            
+
             if len(results['transfers']) > 0:
                 options = []
                 for ch in results['transfers']:
@@ -238,9 +241,9 @@ class ShippingFacade(AbstractShippingFacade):
                         options.append(opt)
                     else:
                         errors += ch['errorMessage']
-                    
+
                 if len(options) > 1:
-                    extra_form = self.get_extra_form(options=options, 
+                    extra_form = self.get_extra_form(options=options,
                                                      full=True,
                                                      initial={'senderCityId': origin_code,
                                                               'receiverCityId': dest_code,
@@ -256,7 +259,8 @@ class ShippingFacade(AbstractShippingFacade):
                                'total_weight': D(weight).quantize(weight_precision),
                                'packs': packs,
                                }
-                    messages = render_to_string(self.messages_template, msg_ctx)
+                    messages = render_to_string(
+                        self.messages_template, msg_ctx)
                     extra_form = self.get_extra_form(initial={'senderCityId': origin_code,
                                                               'receiverCityId': dest_code,
                                                               'transportingType': tr_code,
@@ -264,7 +268,7 @@ class ShippingFacade(AbstractShippingFacade):
 
         else:
             errors += "Errors during facade.get_charges() method %s" % results
-   
+
         return charge, messages, errors, extra_form
 
     def get_queryset(self):
@@ -275,10 +279,10 @@ class ShippingFacade(AbstractShippingFacade):
         branch_id = ''
         n_qs = []
         qs = self.get_all_branches()
-        
+
         if not qs:
             return []
-         
+
         for item in qs:
             branch_title = item['title']
             branch_id = item['bitrixId']
@@ -295,7 +299,7 @@ class ShippingFacade(AbstractShippingFacade):
                                  'text': c['title'],
                                  })
         return n_qs
-    
+
     def format_objects(self, qs):
         """ Prepare data for select2 grouped option list.
             Return smth like 
@@ -306,9 +310,10 @@ class ShippingFacade(AbstractShippingFacade):
                 },...]
         """
         res = []
-        chld = [] 
+        chld = []
         # Sort list of dicts by 'branch' field
-        key = lambda k: k['branch']
+
+        def key(k): return k['branch']
         qs = sorted(qs, key=key)
         # Group it by 'branch' field
         for k, g in itertools.groupby(qs, key):

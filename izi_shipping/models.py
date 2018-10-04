@@ -51,7 +51,7 @@ def get_api_modules():
             res[name] = importlib.import_module(
                 ".facade.%s" % name, __package__)
         except ImportError as e:
-            print("ImportError get_api_modules ERROR ======> get_api_modules ===>", e)
+            print("[izi_shipping] ImportError at get_api_modules", e)
             pass
     return res
 
